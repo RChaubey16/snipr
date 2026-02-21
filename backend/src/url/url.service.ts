@@ -13,6 +13,14 @@ export class UrlService {
 
   async createShortUrl(longUrl: string): Promise<string> {
     const shortCode = nanoid(6);
+
+    const existingUrl = await this.urlRepository.findOne({
+      where: { longUrl },
+    });
+    if (existingUrl) {
+      return existingUrl.shortCode;
+    }
+
     const url = this.urlRepository.create({ longUrl, shortCode });
     await this.urlRepository.save(url);
     return shortCode;
