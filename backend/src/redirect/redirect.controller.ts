@@ -17,7 +17,7 @@ export class RedirectController {
     const longUrl = await this.urlService.getLongUrl(shortCode);
 
     if (!longUrl) {
-      throw new NotFoundException('Short URL not found');
+      throw new NotFoundException('Snipr not found');
     }
 
     await this.urlService.incrementClickCount(shortCode);
