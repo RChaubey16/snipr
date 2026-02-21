@@ -1,18 +1,25 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { nanoid } from 'nanoid';
+import { Url } from './url.entity';
 
 @Injectable()
 export class UrlService {
-  private readonly urlMap = new Map<string, string>();
+  constructor(
+    @InjectRepository(Url)
+    private readonly urlRepository: Repository<Url>,
+  ) {}
 
-  createShortUrl(longUrl: string): string {
+  async createShortUrl(longUrl: string): Promise<string> {
     const shortCode = nanoid(6);
-    this.urlMap.set(shortCode, longUrl);
-    console.log(this.urlMap);
+    const url = this.urlRepository.create({ longUrl, shortCode });
+    await this.urlRepository.save(url);
     return shortCode;
   }
 
-  getLongUrl(shortCode: string): string | undefined {
-    return this.urlMap.get(shortCode);
+  async getLongUrl(shortCode: string): Promise<string | undefined> {
+    const url = await this.urlRepository.findOne({ where: { shortCode } });
+    return url?.longUrl;
   }
 }
