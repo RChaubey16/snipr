@@ -18,8 +18,13 @@ export class UrlService {
     return shortCode;
   }
 
-  async getLongUrl(shortCode: string): Promise<string | undefined> {
+  async getLongUrl(shortCode: string): Promise<string> {
     const url = await this.urlRepository.findOne({ where: { shortCode } });
-    return url?.longUrl;
+
+    if (!url) {
+      return 'Invalid URL';
+    }
+
+    return url?.longUrl || '';
   }
 }

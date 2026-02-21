@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { UrlService } from './url.service';
 
 @Controller('url')
@@ -8,5 +8,15 @@ export class UrlController {
   @Post()
   async createUrl(@Body('url') url: string): Promise<string> {
     return this.urlService.createShortUrl(url);
+  }
+
+  @Get()
+  async getLongUrl(@Body('short_url') shortUrl: string): Promise<string> {
+    console.log(shortUrl);
+    if (!shortUrl) {
+      throw new Error('Short URL is required');
+    }
+
+    return this.urlService.getLongUrl(shortUrl);
   }
 }
