@@ -13,6 +13,7 @@ services:
       - .env
     depends_on:
       - postgres
+      - redis
       
   postgres:
     image: postgres:16-alpine
@@ -37,5 +38,14 @@ services:
     depends_on:
       - postgres
 
+  redis:
+    image: redis:7-alpine
+    container_name: snipr-redis
+    ports:
+      - '${REDIS_PORT}:${REDIS_PORT}'
+    volumes:
+      - redis_data:/data
+
 volumes:
   postgres_data:
+  redis_data:
