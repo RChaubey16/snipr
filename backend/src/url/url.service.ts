@@ -27,4 +27,8 @@ export class UrlService {
 
     return url?.longUrl || '';
   }
+
+  async incrementClickCount(shortCode: string): Promise<void> {
+    await this.urlRepository.increment({ shortCode }, 'clickCount', 1);
+  }
 }

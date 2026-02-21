@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UrlModule } from './url/url.module';
 import { Url } from './url/url.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RedirectModule } from './redirect/redirect.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       }),
     }),
     UrlModule,
+    RedirectModule,
   ],
   controllers: [AppController],
   providers: [AppService],
