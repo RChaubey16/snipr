@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Redirect,
-  NotFoundException,
-} from '@nestjs/common';
+import { Controller, Get, Param, Redirect } from '@nestjs/common';
 import { UrlService } from '../url/url.service';
 
 @Controller()
@@ -15,11 +9,6 @@ export class RedirectController {
   @Redirect()
   async redirect(@Param('shortCode') shortCode: string) {
     const longUrl = await this.urlService.getLongUrl(shortCode);
-
-    if (!longUrl) {
-      throw new NotFoundException('Snipr not found');
-    }
-
     await this.urlService.incrementClickCount(shortCode);
 
     return { url: longUrl };

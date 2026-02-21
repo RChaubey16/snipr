@@ -8,16 +8,13 @@ export class UrlController {
 
   @Post()
   async createUrl(@Body() urlDto: UrlDto): Promise<string> {
-    return this.urlService.createShortUrl(urlDto.url);
+    const { url } = urlDto;
+    return this.urlService.createShortUrl(url);
   }
 
   @Get()
   async getLongUrl(@Body() sniprDto: SniprDto): Promise<string> {
-    console.log(sniprDto.shortUrl);
-    if (!sniprDto.shortUrl) {
-      throw new Error('Short URL is required');
-    }
-
-    return this.urlService.getLongUrl(sniprDto.shortUrl);
+    const { shortUrl } = sniprDto;
+    return this.urlService.getLongUrl(shortUrl);
   }
 }
