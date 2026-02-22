@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Source_Serif_4, Source_Code_Pro } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const fontSans = Space_Grotesk({
   subsets: ["latin"],
+  variable: "--font-sans",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const fontSerif = Source_Serif_4({
   subsets: ["latin"],
+  variable: "--font-serif",
+});
+
+const fontMono = Source_Code_Pro({
+  subsets: ["latin"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -24,11 +29,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider>{children}</ThemeProvider>
+    <html lang="en">
+      <body className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

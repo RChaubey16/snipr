@@ -48,8 +48,6 @@ const UrlInputForm = () => {
           onChange={(e) => setLongUrl(e.target.value)}
         />
         <Button
-          variant="outline"
-          size="default"
           type="submit"
           className="cursor-pointer"
         >
@@ -60,7 +58,7 @@ const UrlInputForm = () => {
 
       {/* Error messages TODO: Update UI later */}
       {errors.length > 0 && (
-        <div className="px-4 py-2 rounded-md bg-black/10">
+        <div className="px-4 py-2 rounded-md">
           {errors.map((error, index) => (
             <p key={index}>{error}</p>
           ))}
@@ -68,7 +66,7 @@ const UrlInputForm = () => {
       )}
 
       {shortUrl && (
-        <div className="px-4 py-2 rounded-md bg-black/10">
+        <div className="px-4 py-2 rounded-md bg-primary/20 text-accent-foreground">
           Your snipr link:{" "}
           <Link href={shortUrl ?? "#"} target="_blank" className="underline">
             {shortUrl}
