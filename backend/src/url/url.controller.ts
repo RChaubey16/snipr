@@ -7,9 +7,11 @@ export class UrlController {
   constructor(private readonly urlService: UrlService) {}
 
   @Post()
-  async createUrl(@Body() urlDto: UrlDto): Promise<string> {
+  async createUrl(@Body() urlDto: UrlDto): Promise<{ shortUrl: string }> {
     const { url } = urlDto;
-    return this.urlService.createShortUrl(url);
+    return {
+      shortUrl: await this.urlService.createShortUrl(url),
+    };
   }
 
   @Get()
