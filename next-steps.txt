@@ -2,4 +2,9 @@ Feb 21, 2026
 
 - Add a DB look up when long URL is provided to generate the short URL [DONE]
 - Add Redis cache for short URL look up [DONE]
-- Frontend 
+- Frontend MVP [DONE]
+- Dashboard page UI [DONE]
+- Backend:
+    - Google login
+    - New links table for logged-in users 
+    - This new table should be used in dashboard.
