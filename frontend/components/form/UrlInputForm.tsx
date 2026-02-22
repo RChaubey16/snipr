@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { motion } from "motion/react";
 import { InputField } from "../input/InputField";
 import { Button } from "../ui/button";
 import { createSniprUrl } from "@/lib/actions";
+import { CircleArrowRight } from "lucide-react";
 
 const UrlInputForm = () => {
   const [longUrl, setLongUrl] = useState("");
@@ -29,7 +31,12 @@ const UrlInputForm = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <motion.div
+      initial={{ filter: "blur(10px)", scale: 0.98, opacity: 0 }}
+      animate={{ filter: "blur(0px)", scale: 1, opacity: 1 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="flex flex-col gap-4"
+    >
       <form onSubmit={onFormSubmit} className="flex items-end gap-2">
         <InputField
           label="Long URL"
@@ -47,6 +54,7 @@ const UrlInputForm = () => {
           className="cursor-pointer"
         >
           Snipe
+          <CircleArrowRight />
         </Button>
       </form>
 
@@ -67,7 +75,7 @@ const UrlInputForm = () => {
           </Link>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
