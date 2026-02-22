@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { House } from "lucide-react";
+import { House, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 import { Separator } from "@/components/ui/separator";
@@ -14,6 +14,13 @@ export function Navbar() {
           <Link href="/">
             <House className="h-5 w-5" />
             <span className="sr-only">Home</span>
+          </Link>
+        </Button>
+        <Separator orientation="vertical" className="h-6" />
+        <Button variant="ghost" size="icon" className="rounded-full" asChild>
+          <Link href="/dashboard">
+            <LayoutDashboard className="h-5 w-5" />
+            <span className="sr-only">Dashboard</span>
           </Link>
         </Button>
         <Separator orientation="vertical" className="h-6" />
