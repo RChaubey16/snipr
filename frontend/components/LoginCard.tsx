@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from 'next/navigation';
 import { motion } from "motion/react";
 import { Scissors } from "lucide-react";
 
@@ -34,9 +35,10 @@ function GoogleIcon() {
 }
 
 export function LoginCard() {
+  const router = useRouter();
   const handleGoogleSignIn = () => {
-    // TODO: wire up your actual Google OAuth / NextAuth handler here
     console.log("Sign in with Google");
+    router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`);
   };
 
   return (

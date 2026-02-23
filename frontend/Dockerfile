@@ -14,6 +14,6 @@ RUN pnpm install
 # Copy the rest of the source code
 COPY . .
 
-EXPOSE 3000
+EXPOSE 3002
 
-CMD ["pnpm", "run", "dev", "--hostname", "0.0.0.0", "--port", "3000"]
+CMD ["pnpm", "run", "dev", "--hostname", "0.0.0.0", "--port", "3002"]
