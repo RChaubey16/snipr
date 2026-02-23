@@ -1,12 +1,25 @@
-import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
 export function useAuth() {
-  const token = Cookies.get("auth_token");
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const logout = () => {
-    Cookies.remove("auth_token");
-    window.location.href = "/";
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
+      credentials: "include", // sends cookies with request
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setUser(data))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const logout = async () => {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+    setUser(null);
   };
 
-  return { isAuthenticated: !!token, token, logout };
+  return { user, loading, isAuthenticated: !!user, logout };
 }
