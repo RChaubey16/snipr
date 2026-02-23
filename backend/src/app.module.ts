@@ -6,6 +6,8 @@ import { UrlModule } from './url/url.module';
 import { createKeyv } from '@keyv/redis';
 import { RedirectModule } from './redirect/redirect.module';
 import { Url } from './url/url.entity';
+import { AuthModule } from './auth/auth.module';
+import { User } from './auth/user.entity';
 
 @Module({
   imports: [
@@ -20,7 +22,7 @@ import { Url } from './url/url.entity';
         username: config.get('DB_USER'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
-        entities: [Url],
+        entities: [Url, User],
         synchronize: true,
       }),
     }),
@@ -38,6 +40,7 @@ import { Url } from './url/url.entity';
     }),
     UrlModule,
     RedirectModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
