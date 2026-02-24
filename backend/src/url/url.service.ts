@@ -2,7 +2,7 @@ import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { nanoid } from 'nanoid';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Url } from './url.entity';
 import type { Cache } from 'cache-manager';
 
@@ -20,19 +20,22 @@ export class UrlService {
    * @param longUrl The long URL to create a short URL for.
    * @returns The short URL for the given long URL.
    */
-  async createShortUrl(longUrl: string): Promise<string> {
+  async createShortUrl(
+    longUrl: string,
+    userId: string | null,
+  ): Promise<string> {
     const existingUrl = await this.urlRepository.findOne({
-      where: { longUrl },
+      where: { longUrl, userId: userId ?? IsNull() },
     });
+
     if (existingUrl) {
       return existingUrl.shortCode;
     }
 
     const shortCode = nanoid(6);
-    const url = this.urlRepository.create({ longUrl, shortCode });
+    const url = this.urlRepository.create({ longUrl, shortCode, userId });
     await this.urlRepository.save(url);
 
-    // Cache immediately on creation
     await this.cacheManager.set(shortCode, longUrl);
 
     return shortCode;

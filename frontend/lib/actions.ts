@@ -1,23 +1,24 @@
 "use server";
 
+import { cookies } from "next/headers";
+
 export async function createSniprUrl(url: string) {
   try {
-    const payload = { url: url };
-
-    console.log("ENV", process.env.API_URL)
+    const cookieStore = await cookies();
+    const authToken = cookieStore.get("auth_token");
 
     const response = await fetch(`${process.env.API_URL}/url`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        // Forward the cookie to your NestJS API
+        ...(authToken && { Cookie: `auth_token=${authToken.value}` }),
       },
-      body: JSON.stringify(payload),
-      redirect: "follow",
-      cache: "no-store", // optional but recommended for server actions
+      body: JSON.stringify({ url }),
+      cache: "no-store",
     });
 
     const result = await response.json();
-    console.log("Result", result)
 
     if (result?.error) {
       return { success: false, error: result?.message };
