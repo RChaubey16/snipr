@@ -23,14 +23,19 @@ Built with a NestJS backend, Next.js frontend, PostgreSQL for persistence, and R
 
 ```
 snipr/
-├── backend/          # NestJS REST API
+├── backend/             # NestJS REST API
 │   └── src/
-│       ├── url/      # URL shortening logic (create & resolve)
-│       └── redirect/ # Redirect handler
-├── frontend/         # Next.js app
-│   └── app/
-│       ├── dashboard/  # Link dashboard
-│       └── login/      # Login page (Google auth)
+│       ├── auth/        # Google OAuth, JWT strategy, guards
+│       ├── url/         # URL shortening logic (CRUD)
+│       └── redirect/    # Redirect handler
+├── frontend/            # Next.js app
+│   ├── app/
+│   │   ├── dashboard/   # Link dashboard (protected)
+│   │   └── login/       # Login page (Google auth)
+│   ├── components/      # UI components (shadcn/ui)
+│   ├── hooks/           # useAuth and other hooks
+│   ├── lib/             # Server actions & utilities
+│   └── middleware.ts     # Auth route protection
 ├── docker-compose.yml
 └── .env.example
 ```
@@ -43,7 +48,10 @@ snipr/
 - ⚡ **Redis caching** — short-code lookups hit Redis before PostgreSQL for minimal latency
 - 🗄️ **PostgreSQL persistence** — all URLs stored with click count tracking
 - 📊 **Dashboard** — view and manage your shortened links
-- 🔐 **Google Login** *(in progress)* — authenticate users for personal link management
+- 🔐 **Google OAuth** — sign in with Google for personal link management
+- 🍪 **Secure cookie-based auth** — JWT stored in HTTP-only cookies with protected route middleware
+- 👤 **Per-user links** — authenticated users get their own link library
+- 🗑️ **Delete URLs** — remove links you no longer need (with ownership enforcement)
 - 🌙 **Dark mode** — theme toggle included
 
 ---
@@ -71,7 +79,7 @@ cp .env.example .env
 Then fill in the values in your `.env` file:
 
 ```env
-PORT=3001
+PORT=3000
 
 DB_HOST=postgres
 DB_PORT=5432
@@ -85,7 +93,19 @@ PGADMIN_PASSWORD=admin
 REDIS_HOST=redis
 REDIS_PORT=6379
 
-FRONTEND_PORT=3000
+FRONTEND_URL=http://localhost:3001
+
+# Google OAuth (https://console.cloud.google.com)
+GOOGLE_OAUTH_CLIENT_ID=your_google_client_id
+GOOGLE_OAUTH_CLIENT_SECRET=your_google_client_secret
+GOOGLE_OAUTH_CALLBACK_URL=http://localhost:3000/auth/google/callback
+
+# JWT
+JWT_SECRET=your_jwt_secret
+
+# Frontend
+NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_FRONTEND_URL=http://localhost:3001
 ```
 
 ### 3. Run with Docker Compose
@@ -96,8 +116,8 @@ docker compose up --build
 
 | Service    | URL                        |
 |------------|----------------------------|
-| Frontend   | http://localhost:3000       |
-| Backend    | http://localhost:3001       |
+| Backend    | http://localhost:3000       |
+| Frontend   | http://localhost:3001       |
 | pgAdmin    | http://localhost:5050       |
 
 ---
@@ -126,6 +146,17 @@ pnpm run dev
 
 ## 🔌 API Reference
 
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `GET` | `/auth/google` | — | Redirect to Google OAuth |
+| `GET` | `/auth/google/callback` | — | Google callback, sets auth cookie |
+| `GET` | `/auth/me` | Required | Get current authenticated user |
+| `POST` | `/auth/logout` | — | Clear auth cookie |
+| `POST` | `/url` | Optional | Create a short URL |
+| `GET` | `/url/my-urls` | Required | Get authenticated user's URLs |
+| `DELETE` | `/url/:id` | Required | Delete a URL (owner only) |
+| `GET` | `/:shortCode` | — | Redirect to the original URL |
+
 ### `POST /url` — Create a short URL
 
 **Request body:**
@@ -138,9 +169,7 @@ pnpm run dev
 { "shortUrl": "abc123" }
 ```
 
-### `GET /:shortCode` — Redirect to the original URL
-
-Visiting `http://localhost:3001/abc123` will redirect to the original long URL.
+> When authenticated, the URL is linked to your account. Anonymous creation is also supported.
 
 ---
 
@@ -168,8 +197,11 @@ pnpm run test:cov
 - [x] Click count tracking
 - [x] Frontend MVP
 - [x] Dashboard UI
-- [ ] Google OAuth login
-- [ ] Per-user link management
+- [x] Google OAuth login
+- [x] Cookie-based JWT authentication
+- [x] Auth-protected routes (frontend middleware)
+- [x] Per-user link management
+- [x] Delete URLs with ownership enforcement
 - [ ] Link analytics & charts
 - [ ] Custom short codes
 
