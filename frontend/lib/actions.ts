@@ -43,10 +43,29 @@ export async function createSniprUrl(url: string) {
     if (authToken) {
       revalidatePath("/dashboard");
     }
-    
+
     return { success: true, data: result };
   } catch (error) {
     console.error(error);
     return { success: false, error: ["Server connection failed"] };
   }
+}
+
+export async function deleteUrl(id: string) {
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("auth_token");
+
+  const response = await fetch(`${process.env.API_URL}/url/${id}`, {
+    method: "DELETE",
+    headers: {
+      ...(authToken && { Cookie: `auth_token=${authToken.value}` }),
+    },
+  });
+
+  if (!response.ok) {
+    return { success: false };
+  }
+
+  revalidatePath("/dashboard");
+  return { success: true };
 }

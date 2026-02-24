@@ -31,6 +31,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { deleteUrl } from "@/lib/actions";
 import { type SniprLink } from "@/lib/mock-data";
 
 const statusVariant: Record<
@@ -72,7 +73,14 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-function ActionsMenu() {
+function ActionsMenu({ id }: { id: string }) {
+  const handleDelete = async () => {
+    const result = await deleteUrl(id);
+    if (!result.success) {
+      console.error("Failed to delete URL");
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -94,7 +102,10 @@ function ActionsMenu() {
           <QrCode className="mr-2 h-4 w-4" />
           QR Code
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer text-destructive">
+        <DropdownMenuItem
+          className="cursor-pointer text-destructive"
+          onClick={handleDelete}
+        >
           <Trash2 className="mr-2 h-4 w-4" />
           Delete
         </DropdownMenuItem>
@@ -104,7 +115,7 @@ function ActionsMenu() {
 }
 
 export function RecentLinksTable({ links }: { links: SniprLink[] }) {
-  const totalLinks  = links.length;
+  const totalLinks = links.length;
 
   if (totalLinks === 0) {
     return (
@@ -161,7 +172,7 @@ export function RecentLinksTable({ links }: { links: SniprLink[] }) {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <ActionsMenu />
+                  <ActionsMenu id={link.id} />
                 </TableCell>
               </TableRow>
             ))}

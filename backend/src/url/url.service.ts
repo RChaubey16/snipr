@@ -65,6 +65,24 @@ export class UrlService {
   }
 
   /**
+   * Deletes a URL created by a specific user.
+   * @param id The ID of the URL to delete.
+   * @param userId The ID of the user to delete the URL for.
+   */
+  async deleteUrl(id: number, userId: string): Promise<void> {
+    const url = await this.urlRepository.findOne({
+      where: { id, userId },
+    });
+
+    if (!url) {
+      throw new NotFoundException('URL not found');
+    }
+
+    await this.urlRepository.remove(url);
+    await this.cacheManager.del(url.shortCode);
+  }
+
+  /**
    * Retrieves the long URL for a given short code.
    * @param shortCode The short code to retrieve the long URL for.
    * @returns The long URL for the given short code.

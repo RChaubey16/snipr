@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Req,
+  Delete,
+  Param,
+} from '@nestjs/common';
 import { UrlService } from './url.service';
 import { SniprDto, UrlDto, UrlResponseDto } from './dto/url.dto';
 import { OptionalJwtGuard } from 'src/auth/guards/optional-jwt.guard';
@@ -34,5 +43,15 @@ export class UrlController {
   async getLongUrl(@Body() sniprDto: SniprDto): Promise<string> {
     const { shortUrl } = sniprDto;
     return this.urlService.getLongUrl(shortUrl);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  async deleteUrl(
+    @Param('id') id: string,
+    @Req() req: Request,
+  ): Promise<{ message: string }> {
+    await this.urlService.deleteUrl(Number(id), (req.user as User).id);
+    return { message: 'URL deleted successfully' };
   }
 }
