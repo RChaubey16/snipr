@@ -5,6 +5,8 @@ import { nanoid } from 'nanoid';
 import { IsNull, Repository } from 'typeorm';
 import { Url } from './url.entity';
 import type { Cache } from 'cache-manager';
+import { User } from 'src/auth/user.entity';
+import { UrlResponseDto } from './dto/url.dto';
 
 @Injectable()
 export class UrlService {
@@ -39,6 +41,27 @@ export class UrlService {
     await this.cacheManager.set(shortCode, longUrl);
 
     return shortCode;
+  }
+
+  /**
+   * Retrieves all URLs created by a specific user.
+   * @param user The user to retrieve URLs for.
+   * @returns An array of URLResponseDto objects.
+   */
+  async getUrlsByUser(user: User): Promise<UrlResponseDto[]> {
+    const urls = await this.urlRepository.find({
+      where: { userId: user.id },
+      order: { createdAt: 'DESC' },
+    });
+
+    return urls.map((url) => ({
+      id: url.id.toString(),
+      shortUrl: `${process.env.FRONTEND_URL}/${url.shortCode}`,
+      originalUrl: url.longUrl,
+      clicks: url.clickCount,
+      createdAt: url.createdAt.toISOString().split('T')[0], // "2026-02-20"
+      status: url.expiresAt > new Date() ? 'active' : 'expired',
+    }));
   }
 
   /**

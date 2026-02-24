@@ -31,7 +31,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { mockLinks, type SniprLink } from "@/lib/mock-data";
+import { type SniprLink } from "@/lib/mock-data";
 
 const statusVariant: Record<
   SniprLink["status"],
@@ -103,7 +103,20 @@ function ActionsMenu() {
   );
 }
 
-export function RecentLinksTable() {
+export function RecentLinksTable({ links }: { links: SniprLink[] }) {
+  const totalLinks  = links.length;
+
+  if (totalLinks === 0) {
+    return (
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold tracking-tight">Recent Links</h2>
+        <div className="rounded-lg border p-8 text-center text-muted-foreground">
+          No links created yet.
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="space-y-4">
       <h2 className="text-2xl font-bold tracking-tight">Recent Links</h2>
@@ -122,12 +135,12 @@ export function RecentLinksTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mockLinks.map((link) => (
+            {links.map((link) => (
               <TableRow key={link.id}>
                 <TableCell>
                   <div className="flex items-center gap-1">
                     <span className="font-mono text-sm">{link.shortUrl}</span>
-                    <CopyButton text={`https://${link.shortUrl}`} />
+                    <CopyButton text={`${link.shortUrl}`} />
                   </div>
                 </TableCell>
                 <TableCell className="hidden max-w-[200px] truncate text-muted-foreground sm:table-cell">

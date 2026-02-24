@@ -1,9 +1,10 @@
 import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common';
 import { UrlService } from './url.service';
-import { SniprDto, UrlDto } from './dto/url.dto';
+import { SniprDto, UrlDto, UrlResponseDto } from './dto/url.dto';
 import { OptionalJwtGuard } from 'src/auth/guards/optional-jwt.guard';
 import { User } from 'src/auth/user.entity';
 import type { Request } from 'express';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('url')
 export class UrlController {
@@ -21,6 +22,12 @@ export class UrlController {
     return {
       shortUrl: await this.urlService.createShortUrl(url, userId),
     };
+  }
+
+  @Get('my-urls')
+  @UseGuards(JwtAuthGuard)
+  async getMyUrls(@Req() req: Request): Promise<UrlResponseDto[]> {
+    return this.urlService.getUrlsByUser(req.user as User);
   }
 
   @Get()
