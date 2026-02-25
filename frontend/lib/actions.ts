@@ -19,6 +19,22 @@ export async function getMyUrls() {
   return response.json();
 }
 
+export async function getMyStats() {
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("auth_token");
+
+  const response = await fetch(`${process.env.API_URL}/url/stats`, {
+    headers: {
+      ...(authToken && { Cookie: `auth_token=${authToken.value}` }),
+    },
+    cache: "no-store",
+  });
+
+  if (!response.ok) return [];
+
+  return response.json();
+}
+
 export async function createSniprUrl(url: string) {
   try {
     const cookieStore = await cookies();

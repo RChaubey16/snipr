@@ -20,3 +20,15 @@ export class UrlResponseDto {
   createdAt: string;
   status: 'active' | 'expired';
 }
+
+export class UserStatsDto {
+  totalLinks: number;
+  totalClicks: number;
+  topLink: {
+    shortUrl: string;
+    originalUrl: string;
+    clicks: number;
+  } | null;
+  clicksThisWeek: number;
+  clicksToday: number;
+}

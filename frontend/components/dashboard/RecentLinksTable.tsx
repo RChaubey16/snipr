@@ -90,7 +90,7 @@ function ActionsMenu({ id }: { id: string }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem className="cursor-pointer">
+        {/* <DropdownMenuItem className="cursor-pointer">
           <Pencil className="mr-2 h-4 w-4" />
           Edit
         </DropdownMenuItem>
@@ -101,7 +101,7 @@ function ActionsMenu({ id }: { id: string }) {
         <DropdownMenuItem className="cursor-pointer">
           <QrCode className="mr-2 h-4 w-4" />
           QR Code
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuItem
           className="cursor-pointer text-destructive"
           onClick={handleDelete}

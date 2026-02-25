@@ -9,7 +9,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { UrlService } from './url.service';
-import { SniprDto, UrlDto, UrlResponseDto } from './dto/url.dto';
+import { SniprDto, UrlDto, UrlResponseDto, UserStatsDto } from './dto/url.dto';
 import { OptionalJwtGuard } from 'src/auth/guards/optional-jwt.guard';
 import { User } from 'src/auth/user.entity';
 import type { Request } from 'express';
@@ -37,6 +37,12 @@ export class UrlController {
   @UseGuards(JwtAuthGuard)
   async getMyUrls(@Req() req: Request): Promise<UrlResponseDto[]> {
     return this.urlService.getUrlsByUser(req.user as User);
+  }
+
+  @Get('stats')
+  @UseGuards(JwtAuthGuard)
+  async getStats(@Req() req: Request): Promise<UserStatsDto> {
+    return this.urlService.getUserStats(req.user as User);
   }
 
   @Get()

@@ -2,11 +2,11 @@ import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { nanoid } from 'nanoid';
-import { IsNull, Repository } from 'typeorm';
+import { In, IsNull, MoreThanOrEqual, Repository } from 'typeorm';
 import { Url } from './url.entity';
 import type { Cache } from 'cache-manager';
 import { User } from 'src/auth/user.entity';
-import { UrlResponseDto } from './dto/url.dto';
+import { UrlResponseDto, UserStatsDto } from './dto/url.dto';
 
 @Injectable()
 export class UrlService {
@@ -62,6 +62,70 @@ export class UrlService {
       createdAt: url.createdAt.toISOString().split('T')[0], // "2026-02-20"
       status: url.expiresAt > new Date() ? 'active' : 'expired',
     }));
+  }
+
+  async getUserStats(user: User): Promise<UserStatsDto> {
+    const urls = await this.urlRepository.find({
+      where: { userId: user.id },
+    });
+
+    if (urls.length === 0) {
+      return {
+        totalLinks: 0,
+        totalClicks: 0,
+        topLink: null,
+        clicksThisWeek: 0,
+        clicksToday: 0,
+      };
+    }
+
+    const totalLinks = urls.length;
+
+    // Total clicks — sum of all click counts across every URL
+    const totalClicks = urls.reduce((sum, url) => sum + url.clickCount, 0);
+
+    // Top link — the URL with the highest individual click count
+    const topLink = urls.reduce((prev, curr) =>
+      curr.clickCount > prev.clickCount ? curr : prev,
+    );
+
+    // For time-based stats, query the clicks table directly
+    const now = new Date();
+
+    const startOfToday = new Date(now);
+    startOfToday.setHours(0, 0, 0, 0);
+
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const urlIds = urls.map((url) => url.id);
+
+    const clicksToday = await this.urlRepository.count({
+      where: {
+        id: In(urlIds),
+        createdAt: MoreThanOrEqual(startOfToday),
+      },
+    });
+
+    const clicksThisWeek = await this.urlRepository.count({
+      where: {
+        id: In(urlIds),
+        createdAt: MoreThanOrEqual(startOfWeek),
+      },
+    });
+
+    return {
+      totalLinks,
+      totalClicks,
+      topLink: {
+        shortUrl: `${process.env.FRONTEND_URL}/${topLink.shortCode}`,
+        originalUrl: topLink.longUrl,
+        clicks: topLink.clickCount,
+      },
+      clicksThisWeek,
+      clicksToday,
+    };
   }
 
   /**

@@ -1,32 +1,35 @@
 import { Link2, MousePointerClick, Trophy, TrendingUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { mockStats } from "@/lib/mock-data";
+import { getMyStats } from "@/lib/actions";
 
-const stats = [
-  {
-    label: "Total Links",
-    value: mockStats.totalLinks,
-    icon: Link2,
-  },
-  {
-    label: "Total Clicks",
-    value: mockStats.totalClicks.toLocaleString(),
-    icon: MousePointerClick,
-  },
-  {
-    label: "Top Link",
-    value: mockStats.topLink,
-    icon: Trophy,
-  },
-  {
-    label: "Clicks This Week",
-    value: mockStats.clicksThisWeek.toLocaleString(),
-    description: `${mockStats.clicksToday} today`,
-    icon: TrendingUp,
-  },
-];
+export async function StatsCards() {
+  const userStats = await getMyStats();
+  console.log(`USER URLs`, userStats);
 
-export function StatsCards() {
+  const stats = [
+    {
+      label: "Total Links",
+      value: userStats?.totalLinks,
+      icon: Link2,
+    },
+    {
+      label: "Total Clicks",
+      value: userStats?.totalClicks.toLocaleString(),
+      icon: MousePointerClick,
+    },
+    {
+      label: "Top Link",
+      value: userStats?.topLink?.shortUrl,
+      icon: Trophy,
+    },
+    {
+      label: "Clicks This Week",
+      value: userStats?.clicksThisWeek.toLocaleString(),
+      description: `${userStats?.clicksToday} today`,
+      icon: TrendingUp,
+    },
+  ];
+
   return (
     <section className="space-y-4">
       <h2 className="text-2xl font-bold tracking-tight">Stats Snapshot</h2>
@@ -41,7 +44,9 @@ export function StatsCards() {
                 <p className="text-sm text-muted-foreground">{stat.label}</p>
                 <p className="truncate text-xl font-bold">{stat.value}</p>
                 {stat.description && (
-                  <p className="text-xs text-muted-foreground">{stat.description}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {stat.description}
+                  </p>
                 )}
               </div>
             </CardContent>
