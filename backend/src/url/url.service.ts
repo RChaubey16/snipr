@@ -2,8 +2,8 @@ import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { nanoid } from 'nanoid';
-import { In, IsNull, MoreThanOrEqual, Repository } from 'typeorm';
-import { Url } from './url.entity';
+import { IsNull, Repository } from 'typeorm';
+import { Click, Url } from './url.entity';
 import type { Cache } from 'cache-manager';
 import { User } from 'src/auth/user.entity';
 import { UrlResponseDto, UserStatsDto } from './dto/url.dto';
@@ -13,6 +13,7 @@ export class UrlService {
   constructor(
     @InjectRepository(Url)
     private readonly urlRepository: Repository<Url>,
+    @InjectRepository(Click) private clickRepository: Repository<Click>,
     @Inject(CACHE_MANAGER)
     private readonly cacheManager: Cache,
   ) {}
@@ -64,6 +65,11 @@ export class UrlService {
     }));
   }
 
+  /**
+   * Retrieves statistics for a specific user.
+   * @param user The user to retrieve statistics for.
+   * @returns A UserStatsDto object.
+   */
   async getUserStats(user: User): Promise<UserStatsDto> {
     const urls = await this.urlRepository.find({
       where: { userId: user.id },
@@ -81,39 +87,19 @@ export class UrlService {
 
     const totalLinks = urls.length;
 
-    // Total clicks — sum of all click counts across every URL
+    // Total clicks (sum of all click counts across every URL)
     const totalClicks = urls.reduce((sum, url) => sum + url.clickCount, 0);
 
-    // Top link — the URL with the highest individual click count
+    // Top link (the URL with the highest individual click count)
     const topLink = urls.reduce((prev, curr) =>
       curr.clickCount > prev.clickCount ? curr : prev,
     );
 
-    // For time-based stats, query the clicks table directly
-    const now = new Date();
-
-    const startOfToday = new Date(now);
-    startOfToday.setHours(0, 0, 0, 0);
-
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
-    startOfWeek.setHours(0, 0, 0, 0);
-
-    const urlIds = urls.map((url) => url.id);
-
-    const clicksToday = await this.urlRepository.count({
-      where: {
-        id: In(urlIds),
-        createdAt: MoreThanOrEqual(startOfToday),
-      },
-    });
-
-    const clicksThisWeek = await this.urlRepository.count({
-      where: {
-        id: In(urlIds),
-        createdAt: MoreThanOrEqual(startOfWeek),
-      },
-    });
+    const clicksToday = urls.reduce((sum, url) => sum + url.dailyClickCount, 0);
+    const clicksThisWeek = urls.reduce(
+      (sum, url) => sum + url.weeklyClickCount,
+      0,
+    );
 
     return {
       totalLinks,
@@ -177,6 +163,14 @@ export class UrlService {
    * @param shortCode The short code to increment the click count for.
    */
   async incrementClickCount(shortCode: string): Promise<void> {
-    await this.urlRepository.increment({ shortCode }, 'clickCount', 1);
+    const url = await this.urlRepository.findOne({ where: { shortCode } });
+    if (!url) return;
+
+    await Promise.all([
+      this.urlRepository.increment({ shortCode }, 'clickCount', 1),
+      this.urlRepository.increment({ shortCode }, 'dailyClickCount', 1),
+      this.urlRepository.increment({ shortCode }, 'weeklyClickCount', 1),
+      this.clickRepository.save({ urlId: url.id }),
+    ]);
   }
 }

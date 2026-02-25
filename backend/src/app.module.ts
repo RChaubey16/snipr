@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
-import { UrlModule } from './url/url.module';
+import { ScheduleModule } from '@nestjs/schedule';
 import { createKeyv } from '@keyv/redis';
+
+import { UrlModule } from './url/url.module';
 import { RedirectModule } from './redirect/redirect.module';
-import { Url } from './url/url.entity';
+import { Click, Url } from './url/url.entity';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/user.entity';
 
@@ -22,7 +24,7 @@ import { User } from './auth/user.entity';
         username: config.get('DB_USER'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
-        entities: [Url, User],
+        entities: [Url, User, Click],
         synchronize: true,
       }),
     }),
@@ -38,6 +40,7 @@ import { User } from './auth/user.entity';
         ],
       }),
     }),
+    ScheduleModule.forRoot(),
     UrlModule,
     RedirectModule,
     AuthModule,

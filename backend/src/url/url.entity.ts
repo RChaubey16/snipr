@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -37,4 +38,29 @@ export class Url {
 
   @Column({ nullable: true })
   userId!: string | null;
+
+  @OneToMany(() => Click, (click) => click.url)
+  clicks!: Click[];
+
+  @Column({ default: 0 })
+  dailyClickCount!: number;
+
+  @Column({ default: 0 })
+  weeklyClickCount!: number;
+}
+
+@Entity()
+export class Click {
+  @PrimaryGeneratedColumn()
+  id!: number;
+
+  @ManyToOne(() => Url, (url) => url.clicks, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'urlId' })
+  url!: Url;
+
+  @Column()
+  urlId!: number;
+
+  @CreateDateColumn()
+  createdAt!: Date;
 }
