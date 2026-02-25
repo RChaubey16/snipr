@@ -8,3 +8,9 @@ Feb 21, 2026
     - Google login [DONE]
     - New links table for logged-in users [DONE]
     - This new table should be used in dashboard. [DONE]
+
+
+- Links listing page for logged-in user.
+- Recent links upto 10 links support.
+- Deploy on Railway.
+

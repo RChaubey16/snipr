@@ -21,6 +21,13 @@ export class UrlResponseDto {
   status: 'active' | 'expired';
 }
 
+export class PaginatedUrlResponseDto {
+  data: UrlResponseDto[];
+  total: number;
+  page: number;
+  totalPages: number;
+}
+
 export class UserStatsDto {
   totalLinks: number;
   totalClicks: number;

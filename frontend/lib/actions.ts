@@ -3,11 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
-export async function getMyUrls() {
+export async function getMyUrls(page: number = 1, limit: number = 10) {
   const cookieStore = await cookies();
   const authToken = cookieStore.get("auth_token");
 
-  const response = await fetch(`${process.env.API_URL}/url/my-urls`, {
+  const response = await fetch(`${process.env.API_URL}/url/my-urls?page=${page}&limit=${limit}`, {
     headers: {
       ...(authToken && { Cookie: `auth_token=${authToken.value}` }),
     },

@@ -17,13 +17,13 @@ export const metadata: Metadata = {
 
 export default async function DashboardPage() {
   const links = await getMyUrls();
-  
+
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-6xl space-y-10 px-4 py-12 pb-24 sm:px-6 lg:px-8">
         <QuickShorten />
         <StatsCards />
-        <RecentLinksTable links={links} />
+        <RecentLinksTable links={links.data} />
       </main>
       <Navbar />
     </div>

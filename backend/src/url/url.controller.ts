@@ -7,9 +7,15 @@ import {
   Req,
   Delete,
   Param,
+  Query,
 } from '@nestjs/common';
 import { UrlService } from './url.service';
-import { SniprDto, UrlDto, UrlResponseDto, UserStatsDto } from './dto/url.dto';
+import {
+  PaginatedUrlResponseDto,
+  SniprDto,
+  UrlDto,
+  UserStatsDto,
+} from './dto/url.dto';
 import { OptionalJwtGuard } from 'src/auth/guards/optional-jwt.guard';
 import { User } from 'src/auth/user.entity';
 import type { Request } from 'express';
@@ -35,8 +41,16 @@ export class UrlController {
 
   @Get('my-urls')
   @UseGuards(JwtAuthGuard)
-  async getMyUrls(@Req() req: Request): Promise<UrlResponseDto[]> {
-    return this.urlService.getUrlsByUser(req.user as User);
+  async getMyUrls(
+    @Req() req: Request,
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+  ): Promise<PaginatedUrlResponseDto> {
+    return this.urlService.getUrlsByUser(
+      req.user as User,
+      Number(page),
+      Number(limit),
+    );
   }
 
   @Get('stats')

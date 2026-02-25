@@ -6,7 +6,7 @@ import { IsNull, Repository } from 'typeorm';
 import { Click, Url } from './url.entity';
 import type { Cache } from 'cache-manager';
 import { User } from 'src/auth/user.entity';
-import { UrlResponseDto, UserStatsDto } from './dto/url.dto';
+import { PaginatedUrlResponseDto, UserStatsDto } from './dto/url.dto';
 
 @Injectable()
 export class UrlService {
@@ -47,22 +47,35 @@ export class UrlService {
   /**
    * Retrieves all URLs created by a specific user.
    * @param user The user to retrieve URLs for.
-   * @returns An array of URLResponseDto objects.
+   * @param page The page number to retrieve.
+   * @param limit The number of URLs to retrieve per page.
+   * @returns An array of PaginatedUrlResponseDto objects.
    */
-  async getUrlsByUser(user: User): Promise<UrlResponseDto[]> {
-    const urls = await this.urlRepository.find({
+  async getUrlsByUser(
+    user: User,
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<PaginatedUrlResponseDto> {
+    const [urls, total] = await this.urlRepository.findAndCount({
       where: { userId: user.id },
       order: { createdAt: 'DESC' },
+      take: limit,
+      skip: (page - 1) * limit,
     });
 
-    return urls.map((url) => ({
-      id: url.id.toString(),
-      shortUrl: `${process.env.FRONTEND_URL}/${url.shortCode}`,
-      originalUrl: url.longUrl,
-      clicks: url.clickCount,
-      createdAt: url.createdAt.toISOString().split('T')[0], // "2026-02-20"
-      status: url.expiresAt > new Date() ? 'active' : 'expired',
-    }));
+    return {
+      data: urls.map((url) => ({
+        id: url.id.toString(),
+        shortUrl: `${process.env.FRONTEND_URL}/${url.shortCode}`,
+        originalUrl: url.longUrl,
+        clicks: url.clickCount,
+        createdAt: url.createdAt.toISOString().split('T')[0], // "2026-02-20"
+        status: url.expiresAt > new Date() ? 'active' : 'expired',
+      })),
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   /**
