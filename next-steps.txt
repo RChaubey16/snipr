@@ -11,9 +11,9 @@ Feb 21, 2026
 
 
 - Links listing page for logged-in user [Done]
-- Recent links upto 10 links support [Done]
-- Update Navbar state for logged-in and logged-out user.
-- Add tooltip on Navbar items.
+- Recent links upto 10 links support [DONE]
+- Update Navbar state for logged-in and logged-out user [DONE]
+- Add tooltip on Navbar items [DONE]
 - Logout user.
 - Deploy on Railway.
 
