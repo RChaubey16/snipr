@@ -5,6 +5,6 @@ Feb 21, 2026
 - Frontend MVP [DONE]
 - Dashboard page UI [DONE]
 - Backend:
-    - Google login
-    - New links table for logged-in users 
-    - This new table should be used in dashboard.
+    - Google login [DONE]
+    - New links table for logged-in users [DONE]
+    - This new table should be used in dashboard. [DONE]

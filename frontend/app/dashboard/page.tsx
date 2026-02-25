@@ -8,6 +8,11 @@ import { getMyUrls } from "@/lib/actions";
 export const metadata: Metadata = {
   title: "Dashboard – Snipr",
   description: "Manage your shortened links",
+  openGraph: {
+    title: "Dashboard – Snipr",
+    description: "Manage your shortened links",
+  },
+  robots: { index: false },
 };
 
 export default async function DashboardPage() {

@@ -5,6 +5,10 @@ import { LoginCard } from "@/components/LoginCard";
 export const metadata: Metadata = {
   title: "Login – Snipr",
   description: "Sign in to Snipr to manage and shorten your links.",
+  openGraph: {
+    title: "Login – Snipr",
+    description: "Sign in to Snipr to manage and shorten your links.",
+  },
 };
 
 export default function LoginPage() {
