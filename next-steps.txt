@@ -10,7 +10,10 @@ Feb 21, 2026
     - This new table should be used in dashboard. [DONE]
 
 
-- Links listing page for logged-in user.
-- Recent links upto 10 links support.
+- Links listing page for logged-in user [Done]
+- Recent links upto 10 links support [Done]
+- Update Navbar state for logged-in and logged-out user.
+- Add tooltip on Navbar items.
+- Logout user.
 - Deploy on Railway.
 

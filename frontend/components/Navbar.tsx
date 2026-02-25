@@ -1,19 +1,21 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
 import { House, LayoutDashboard, Link2, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import { DarkModeToggle } from "@/components/DarkModeToggle";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/useAuth";
-import Image from "next/image";
 
 type User = {
   avatar?: string | null;
@@ -33,7 +35,7 @@ export function Navbar() {
 
   return (
     <nav className="fixed bottom-6 left-1/2 -translate-x-1/2">
-      <div className="flex items-center gap-2 rounded-full border bg-background/80 px-3 py-2 shadow-sm backdrop-blur-sm">
+      <div className="bg-background/80 flex items-center gap-2 rounded-full border px-3 py-2 shadow-sm backdrop-blur-sm">
         <Button variant="ghost" size="icon" className="rounded-full" asChild>
           <Link href="/">
             <House className="h-5 w-5" />
@@ -61,7 +63,7 @@ export function Navbar() {
             <Separator orientation="vertical" className="h-6" />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="h-8 w-8 cursor-pointer overflow-hidden rounded-full focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+                <button className="focus:ring-ring h-8 w-8 cursor-pointer overflow-hidden rounded-full focus:ring-2 focus:ring-offset-2 focus:outline-none">
                   {user.avatar ? (
                     <Image
                       src={user.avatar}
@@ -72,7 +74,7 @@ export function Navbar() {
                       height={32}
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-muted text-xs font-medium">
+                    <div className="bg-muted flex h-full w-full items-center justify-center text-xs font-medium">
                       {user.name?.charAt(0)?.toUpperCase() ?? "U"}
                     </div>
                   )}

@@ -7,12 +7,15 @@ export async function getMyUrls(page: number = 1, limit: number = 10) {
   const cookieStore = await cookies();
   const authToken = cookieStore.get("auth_token");
 
-  const response = await fetch(`${process.env.API_URL}/url/my-urls?page=${page}&limit=${limit}`, {
-    headers: {
-      ...(authToken && { Cookie: `auth_token=${authToken.value}` }),
+  const response = await fetch(
+    `${process.env.API_URL}/url/my-urls?page=${page}&limit=${limit}`,
+    {
+      headers: {
+        ...(authToken && { Cookie: `auth_token=${authToken.value}` }),
+      },
+      cache: "no-store",
     },
-    cache: "no-store",
-  });
+  );
 
   if (!response.ok) return [];
 

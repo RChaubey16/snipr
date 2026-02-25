@@ -1,25 +1,19 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+
 import {
-  Copy,
+  ArrowRight,
+  BarChart3,
   Check,
+  Copy,
   MoreHorizontal,
   Pencil,
-  Trash2,
-  BarChart3,
   QrCode,
-  ArrowRight,
+  Trash2,
 } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { useState } from "react";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,6 +22,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Tooltip,
   TooltipContent,
@@ -66,7 +68,7 @@ function CopyButton({ text }: { text: string }) {
           {copied ? (
             <Check className="h-3.5 w-3.5 text-green-500" />
           ) : (
-            <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+            <Copy className="text-muted-foreground h-3.5 w-3.5" />
           )}
         </Button>
       </TooltipTrigger>
@@ -105,7 +107,7 @@ function ActionsMenu({ id }: { id: string }) {
           QR Code
         </DropdownMenuItem> */}
         <DropdownMenuItem
-          className="cursor-pointer text-destructive"
+          className="text-destructive cursor-pointer"
           onClick={handleDelete}
         >
           <Trash2 className="mr-2 h-4 w-4" />
@@ -123,7 +125,7 @@ export function RecentLinksTable({ links }: { links: SniprLink[] }) {
     return (
       <section className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Recent Links</h2>
-        <div className="rounded-lg border p-8 text-center text-muted-foreground">
+        <div className="text-muted-foreground rounded-lg border p-8 text-center">
           No links created yet.
         </div>
       </section>
@@ -136,7 +138,7 @@ export function RecentLinksTable({ links }: { links: SniprLink[] }) {
         <h2 className="text-2xl font-bold tracking-tight">Recent Links</h2>
         <Link
           href="/dashboard/links"
-          className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-sm transition-colors"
         >
           View all
           <ArrowRight className="h-4 w-4" />
@@ -165,13 +167,13 @@ export function RecentLinksTable({ links }: { links: SniprLink[] }) {
                     <CopyButton text={`${link.shortUrl}`} />
                   </div>
                 </TableCell>
-                <TableCell className="hidden max-w-[200px] truncate text-muted-foreground sm:table-cell">
+                <TableCell className="text-muted-foreground hidden max-w-[200px] truncate sm:table-cell">
                   {link.originalUrl}
                 </TableCell>
                 <TableCell className="text-right font-medium tabular-nums">
                   {link.clicks.toLocaleString()}
                 </TableCell>
-                <TableCell className="hidden text-muted-foreground md:table-cell">
+                <TableCell className="text-muted-foreground hidden md:table-cell">
                   {new Date(link.createdAt).toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",

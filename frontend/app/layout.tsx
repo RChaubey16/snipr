@@ -1,7 +1,14 @@
+import {
+  Source_Code_Pro,
+  Source_Serif_4,
+  Space_Grotesk,
+} from "next/font/google";
+
 import type { Metadata } from "next";
-import { Space_Grotesk, Source_Serif_4, Source_Code_Pro } from "next/font/google";
+
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+
 import "./globals.css";
 
 const fontSans = Space_Grotesk({
@@ -21,7 +28,7 @@ const fontMono = Source_Code_Pro({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   ),
   title: {
     default: "Snipr – Shorten, Share, Track",
@@ -48,11 +55,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}>
+      <body
+        className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}
+      >
         <ThemeProvider>
-          <TooltipProvider>
-            {children}
-          </TooltipProvider>
+          <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

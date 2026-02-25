@@ -1,8 +1,9 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import { motion } from "motion/react";
+import { useRouter } from "next/navigation";
+
 import { Scissors } from "lucide-react";
+import { motion } from "motion/react";
 
 /** Inline SVG for the official Google "G" logo mark */
 function GoogleIcon() {
@@ -49,38 +50,36 @@ export function LoginCard() {
       className="w-full max-w-sm"
     >
       {/* Card */}
-      <div className="overflow-hidden rounded-[calc(var(--radius)*2.5)] border border-border bg-card text-card-foreground shadow-xl">
-
+      <div className="border-border bg-card text-card-foreground overflow-hidden rounded-[calc(var(--radius)*2.5)] border shadow-xl">
         {/* Top accent strip */}
-        <div className="h-[3px] bg-gradient-to-r from-primary to-primary/40" />
+        <div className="from-primary to-primary/40 h-[3px] bg-gradient-to-r" />
 
-        <div className="flex flex-col items-center gap-6 px-8 pb-8 pt-10">
-
+        <div className="flex flex-col items-center gap-6 px-8 pt-10 pb-8">
           {/* Logo + wordmark */}
           <div className="flex flex-col items-center gap-3">
-            <div className="flex h-[52px] w-[52px] items-center justify-center rounded-[calc(var(--radius)*2)] bg-primary text-primary-foreground ring-8 ring-primary/15">
+            <div className="bg-primary text-primary-foreground ring-primary/15 flex h-[52px] w-[52px] items-center justify-center rounded-[calc(var(--radius)*2)] ring-8">
               <Scissors size={26} strokeWidth={2.2} />
             </div>
 
             <div className="text-center">
-              <h1 className="font-sans text-[1.6rem] font-bold leading-[1.15] tracking-tight text-foreground">
+              <h1 className="text-foreground font-sans text-[1.6rem] leading-[1.15] font-bold tracking-tight">
                 snipr
               </h1>
-              <p className="mt-0.5 text-xs text-muted-foreground">
+              <p className="text-muted-foreground mt-0.5 text-xs">
                 Snip links. Share faster.
               </p>
             </div>
           </div>
 
           {/* Divider */}
-          <div className="h-px w-full bg-border" />
+          <div className="bg-border h-px w-full" />
 
           {/* Heading */}
           <div className="text-center">
-            <p className="font-sans text-[1.05rem] font-semibold text-foreground">
+            <p className="text-foreground font-sans text-[1.05rem] font-semibold">
               Welcome back
             </p>
-            <p className="mt-1 text-[0.825rem] text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-[0.825rem]">
               Sign in to manage your shortened links
             </p>
           </div>
@@ -91,14 +90,14 @@ export function LoginCard() {
             whileHover={{ scale: 1.015 }}
             whileTap={{ scale: 0.975 }}
             transition={{ type: "spring", stiffness: 400, damping: 22 }}
-            className="flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-[var(--radius)] border border-border bg-background px-5 py-3 font-sans text-[0.9rem] font-medium text-foreground shadow-sm transition-[box-shadow,background] duration-200 hover:bg-secondary hover:shadow-md"
+            className="border-border bg-background text-foreground hover:bg-secondary flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-[var(--radius)] border px-5 py-3 font-sans text-[0.9rem] font-medium shadow-sm transition-[box-shadow,background] duration-200 hover:shadow-md"
           >
             <GoogleIcon />
             Continue with Google
           </motion.button>
 
           {/* Footer note */}
-          <p className="text-center text-[0.73rem] leading-relaxed text-muted-foreground">
+          <p className="text-muted-foreground text-center text-[0.73rem] leading-relaxed">
             By signing in, you agree to our{" "}
             <a href="/terms" className="text-primary underline">
               Terms of Service

@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { CircleArrowRight, Copy, Check, ExternalLink } from "lucide-react";
 import Link from "next/link";
+
+import { Check, CircleArrowRight, Copy, ExternalLink } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { createSniprUrl } from "@/lib/actions";
 
 export function QuickShorten() {
@@ -81,7 +83,7 @@ export function QuickShorten() {
         </Button>
       </form>
 
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error && <p className="text-destructive text-sm">{error}</p>}
 
       <AnimatePresence>
         {shortUrl && (
@@ -94,10 +96,10 @@ export function QuickShorten() {
             <Card className="border-primary/30 bg-primary/5">
               <CardContent className="flex items-center justify-between gap-4 py-4">
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     Your short link
                   </p>
-                  <p className="truncate font-mono text-lg font-semibold text-primary">
+                  <p className="text-primary truncate font-mono text-lg font-semibold">
                     {shortUrl}
                   </p>
                 </div>

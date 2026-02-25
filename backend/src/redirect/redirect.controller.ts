@@ -1,4 +1,5 @@
 import { Controller, Get, Param, Redirect } from '@nestjs/common';
+
 import { UrlService } from '../url/url.service';
 
 @Controller()

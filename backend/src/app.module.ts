@@ -1,15 +1,16 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { createKeyv } from '@keyv/redis';
 
-import { UrlModule } from './url/url.module';
-import { RedirectModule } from './redirect/redirect.module';
-import { Click, Url } from './url/url.entity';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/user.entity';
+import { RedirectModule } from './redirect/redirect.module';
+import { Click, Url } from './url/url.entity';
+import { UrlModule } from './url/url.module';
 
 @Module({
   imports: [

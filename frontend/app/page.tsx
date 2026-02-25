@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import UrlInputForm from "@/components/form/UrlInputForm";
+
 import { Navbar } from "@/components/Navbar";
+import UrlInputForm from "@/components/form/UrlInputForm";
 
 export const metadata: Metadata = {
   title: { absolute: "Snipr – Shorten, Share, Track" },
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <div className="bg-background flex min-h-screen items-center justify-center">
       <UrlInputForm />
       <Navbar />
     </div>

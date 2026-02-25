@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Navbar } from "@/components/Navbar";
+
 import { LoginCard } from "@/components/LoginCard";
+import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Login – Snipr",
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="bg-background flex min-h-screen items-center justify-center px-4">
       <LoginCard />
       <Navbar />
     </div>

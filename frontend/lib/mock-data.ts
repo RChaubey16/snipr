@@ -35,7 +35,8 @@ export const mockLinks: SniprLink[] = [
   {
     id: "3",
     shortUrl: "snipr.io/blog-post",
-    originalUrl: "https://blog.example.com/how-to-build-url-shortener-with-nextjs-and-go",
+    originalUrl:
+      "https://blog.example.com/how-to-build-url-shortener-with-nextjs-and-go",
     clicks: 541,
     createdAt: "2026-02-15",
     status: "active",
@@ -75,7 +76,8 @@ export const mockLinks: SniprLink[] = [
   {
     id: "8",
     shortUrl: "snipr.io/conf-talk",
-    originalUrl: "https://conference.dev/talks/building-scalable-url-shorteners",
+    originalUrl:
+      "https://conference.dev/talks/building-scalable-url-shorteners",
     clicks: 63,
     createdAt: "2026-01-20",
     status: "expired",

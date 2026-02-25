@@ -1,9 +1,11 @@
-import { Controller, UseGuards, Get, Req, Res, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+
 import type { Request, Response } from 'express';
-import { User } from './user.entity';
+
+import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { User } from './user.entity';
 
 interface RequestWithUser extends Request {
   user: User;

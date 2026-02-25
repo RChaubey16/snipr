@@ -1,4 +1,5 @@
-import { Link2, MousePointerClick, Trophy, TrendingUp } from "lucide-react";
+import { Link2, MousePointerClick, TrendingUp, Trophy } from "lucide-react";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { getMyStats } from "@/lib/actions";
 
@@ -36,14 +37,14 @@ export async function StatsCards() {
         {stats.map((stat) => (
           <Card key={stat.label}>
             <CardContent className="flex items-start gap-4 py-5">
-              <div className="rounded-md bg-primary/10 p-2.5">
-                <stat.icon className="h-5 w-5 text-primary" />
+              <div className="bg-primary/10 rounded-md p-2.5">
+                <stat.icon className="text-primary h-5 w-5" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm text-muted-foreground">{stat.label}</p>
+                <p className="text-muted-foreground text-sm">{stat.label}</p>
                 <p className="truncate text-xl font-bold">{stat.value}</p>
                 {stat.description && (
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     {stat.description}
                   </p>
                 )}

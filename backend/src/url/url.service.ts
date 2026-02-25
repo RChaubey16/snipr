@@ -1,12 +1,14 @@
-import { Injectable, Inject, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { nanoid } from 'nanoid';
-import { IsNull, Repository } from 'typeorm';
-import { Click, Url } from './url.entity';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+
 import type { Cache } from 'cache-manager';
+import { nanoid } from 'nanoid';
 import { User } from 'src/auth/user.entity';
+import { IsNull, Repository } from 'typeorm';
+
 import { PaginatedUrlResponseDto, UserStatsDto } from './dto/url.dto';
+import { Click, Url } from './url.entity';
 
 @Injectable()
 export class UrlService {

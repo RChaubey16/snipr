@@ -1,25 +1,27 @@
 import {
-  Controller,
-  Post,
   Body,
-  Get,
-  UseGuards,
-  Req,
+  Controller,
   Delete,
+  Get,
   Param,
+  Post,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
-import { UrlService } from './url.service';
+
+import type { Request } from 'express';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { OptionalJwtGuard } from 'src/auth/guards/optional-jwt.guard';
+import { User } from 'src/auth/user.entity';
+
 import {
   PaginatedUrlResponseDto,
   SniprDto,
   UrlDto,
   UserStatsDto,
 } from './dto/url.dto';
-import { OptionalJwtGuard } from 'src/auth/guards/optional-jwt.guard';
-import { User } from 'src/auth/user.entity';
-import type { Request } from 'express';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UrlService } from './url.service';
 
 @Controller('url')
 export class UrlController {

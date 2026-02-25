@@ -1,20 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Card, CardContent } from "../ui/card";
-import { createSniprUrl } from "@/lib/actions";
+
 import {
+  AlertCircle,
+  Check,
   CircleArrowRight,
   Copy,
-  Check,
   ExternalLink,
   Scissors,
-  AlertCircle,
 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useState } from "react";
+
+import { createSniprUrl } from "@/lib/actions";
+
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
+import { Input } from "../ui/input";
 
 const UrlInputForm = () => {
   const [longUrl, setLongUrl] = useState("");
@@ -40,7 +43,9 @@ const UrlInputForm = () => {
         return;
       }
 
-      setShortUrl(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/${res.data.shortUrl}`);
+      setShortUrl(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/${res.data.shortUrl}`,
+      );
       setLongUrl("");
     } catch {
       setError("Server connection failed");
@@ -68,10 +73,10 @@ const UrlInputForm = () => {
       className="flex w-full max-w-xl flex-col items-center gap-8 px-4"
     >
       <div className="flex flex-col items-center gap-3 text-center">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15">
-          <Scissors className="h-6 w-6 text-primary" />
+        <div className="bg-primary/15 flex h-12 w-12 items-center justify-center rounded-xl">
+          <Scissors className="text-primary h-6 w-6" />
         </div>
-        <h1 className="font-serif text-4xl font-bold tracking-tight text-foreground">
+        <h1 className="text-foreground font-serif text-4xl font-bold tracking-tight">
           Snip your links
         </h1>
         <p className="text-muted-foreground">
@@ -105,7 +110,7 @@ const UrlInputForm = () => {
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
             transition={{ duration: 0.2 }}
-            className="flex w-full items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+            className="border-destructive/30 bg-destructive/10 text-destructive flex w-full items-center gap-2 rounded-lg border px-4 py-3 text-sm"
           >
             <AlertCircle className="h-4 w-4 shrink-0" />
             {error}
@@ -124,10 +129,8 @@ const UrlInputForm = () => {
           >
             <Card className="border-primary/30 bg-primary/5">
               <CardContent className="space-y-3 py-4">
-                <p className="text-xs text-muted-foreground">
-                  Your short link
-                </p>
-                <p className="break-all font-mono text-lg font-semibold text-primary">
+                <p className="text-muted-foreground text-xs">Your short link</p>
+                <p className="text-primary font-mono text-lg font-semibold break-all">
                   {shortUrl}
                 </p>
                 <div className="flex gap-2">
