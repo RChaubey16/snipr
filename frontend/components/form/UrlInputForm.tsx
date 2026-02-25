@@ -15,6 +15,8 @@ import { useState } from "react";
 
 import { createSniprUrl } from "@/lib/actions";
 
+import { AnimateIcon } from "../animate-ui/icons/icon";
+import { ScissorsLineDashed } from "../animate-ui/icons/scissors-line-dashed";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
@@ -98,8 +100,16 @@ const UrlInputForm = () => {
           className="h-12 cursor-pointer px-6"
           disabled={isLoading}
         >
-          {isLoading ? "Snipping..." : "Snipe"}
-          <CircleArrowRight className="ml-1 h-4 w-4" />
+          {isLoading ? (
+            <AnimateIcon animateOnView loop>
+              <ScissorsLineDashed size={24} />
+            </AnimateIcon>
+          ) : (
+            "Snipe"
+          )}
+          <AnimateIcon animateOnView loop loopDelay={3000}>
+            <ScissorsLineDashed />
+          </AnimateIcon>
         </Button>
       </form>
 

@@ -11,6 +11,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { createSniprUrl } from "@/lib/actions";
 
+import { AnimateIcon } from "../animate-ui/icons/icon";
+import { ScissorsLineDashed } from "../animate-ui/icons/scissors-line-dashed";
+
 export function QuickShorten() {
   const [longUrl, setLongUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
@@ -78,8 +81,16 @@ export function QuickShorten() {
           className="h-12 cursor-pointer px-6"
           disabled={isLoading}
         >
-          {isLoading ? "Shortening..." : "Shorten"}
-          <CircleArrowRight className="ml-1 h-4 w-4" />
+          {isLoading ? (
+            <AnimateIcon animateOnView loop>
+              <ScissorsLineDashed />
+            </AnimateIcon>
+          ) : (
+            "Snipe"
+          )}
+          <AnimateIcon animateOnView loop loopDelay={3000}>
+            <ScissorsLineDashed />
+          </AnimateIcon>
         </Button>
       </form>
 
