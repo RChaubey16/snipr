@@ -4,7 +4,6 @@ import { getMyStats } from "@/lib/actions";
 
 export async function StatsCards() {
   const userStats = await getMyStats();
-  console.log(`USER URLs`, userStats);
 
   const stats = [
     {
