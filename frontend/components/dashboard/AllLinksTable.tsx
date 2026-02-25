@@ -1,16 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState, useTransition } from "react";
 import {
   Copy,
   Check,
   MoreHorizontal,
-  Pencil,
   Trash2,
-  BarChart3,
-  QrCode,
-  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import {
   Table,
@@ -33,7 +30,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { deleteUrl } from "@/lib/actions";
+import { deleteUrl, getMyUrls } from "@/lib/actions";
 import { type SniprLink } from "@/lib/mock-data";
 
 const statusVariant: Record<
@@ -92,18 +89,6 @@ function ActionsMenu({ id }: { id: string }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {/* <DropdownMenuItem className="cursor-pointer">
-          <Pencil className="mr-2 h-4 w-4" />
-          Edit
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
-          <BarChart3 className="mr-2 h-4 w-4" />
-          Analytics
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
-          <QrCode className="mr-2 h-4 w-4" />
-          QR Code
-        </DropdownMenuItem> */}
         <DropdownMenuItem
           className="cursor-pointer text-destructive"
           onClick={handleDelete}
@@ -116,13 +101,37 @@ function ActionsMenu({ id }: { id: string }) {
   );
 }
 
-export function RecentLinksTable({ links }: { links: SniprLink[] }) {
-  const totalLinks = links.length;
+type AllLinksTableProps = {
+  initialData: SniprLink[];
+  total: number;
+  page: number;
+  totalPages: number;
+};
 
-  if (totalLinks === 0) {
+export function AllLinksTable({
+  initialData,
+  total,
+  page: initialPage,
+  totalPages: initialTotalPages,
+}: AllLinksTableProps) {
+  const [links, setLinks] = useState(initialData);
+  const [page, setPage] = useState(initialPage);
+  const [totalPages, setTotalPages] = useState(initialTotalPages);
+  const [isPending, startTransition] = useTransition();
+
+  const goToPage = (newPage: number) => {
+    startTransition(async () => {
+      const result = await getMyUrls(newPage);
+      setLinks(result.data);
+      setPage(result.page);
+      setTotalPages(result.totalPages);
+    });
+  };
+
+  if (links.length === 0 && page === 1) {
     return (
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold tracking-tight">Recent Links</h2>
+        <h2 className="text-2xl font-bold tracking-tight">My Links</h2>
         <div className="rounded-lg border p-8 text-center text-muted-foreground">
           No links created yet.
         </div>
@@ -132,17 +141,8 @@ export function RecentLinksTable({ links }: { links: SniprLink[] }) {
 
   return (
     <section className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold tracking-tight">Recent Links</h2>
-        <Link
-          href="/dashboard/links"
-          className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          View all
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-      <div className="rounded-lg border">
+      <h2 className="text-2xl font-bold tracking-tight">My Links</h2>
+      <div className={`rounded-lg border ${isPending ? "opacity-60" : ""} transition-opacity`}>
         <Table>
           <TableHeader>
             <TableRow>
@@ -190,6 +190,33 @@ export function RecentLinksTable({ links }: { links: SniprLink[] }) {
           </TableBody>
         </Table>
       </div>
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            Page {page} of {totalPages}
+          </p>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => goToPage(page - 1)}
+              disabled={page <= 1 || isPending}
+            >
+              <ChevronLeft className="mr-1 h-4 w-4" />
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => goToPage(page + 1)}
+              disabled={page >= totalPages || isPending}
+            >
+              Next
+              <ChevronRight className="ml-1 h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

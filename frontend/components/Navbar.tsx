@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { House, LayoutDashboard, LogOut } from "lucide-react";
+import { House, LayoutDashboard, Link2, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 import { Separator } from "@/components/ui/separator";
@@ -45,6 +45,13 @@ export function Navbar() {
           <Link href="/dashboard">
             <LayoutDashboard className="h-5 w-5" />
             <span className="sr-only">Dashboard</span>
+          </Link>
+        </Button>
+        <Separator orientation="vertical" className="h-6" />
+        <Button variant="ghost" size="icon" className="rounded-full" asChild>
+          <Link href="/dashboard/links">
+            <Link2 className="h-5 w-5" />
+            <span className="sr-only">Links</span>
           </Link>
         </Button>
         <Separator orientation="vertical" className="h-6" />

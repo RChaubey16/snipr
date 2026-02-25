@@ -58,6 +58,7 @@ export async function createSniprUrl(url: string) {
 
     if (authToken) {
       revalidatePath("/dashboard");
+      revalidatePath("/dashboard/links");
     }
 
     return { success: true, data: result };
@@ -83,5 +84,6 @@ export async function deleteUrl(id: string) {
   }
 
   revalidatePath("/dashboard");
+  revalidatePath("/dashboard/links");
   return { success: true };
 }
