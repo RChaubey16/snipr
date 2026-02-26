@@ -2,41 +2,33 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile.prod
-    container_name: snipr-backend
+      dockerfile: Dockerfile.dev
+    container_name: snipr-backend-dev
     ports:
       - '${PORT}:${PORT}'
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
     env_file:
       - .env
-    environment:
-      - PORT=${PORT}
-      - NODE_ENV=production
     depends_on:
       - postgres
       - redis
-    restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.prod
-      args:
-        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-        - NEXT_PUBLIC_FRONTEND_URL=${NEXT_PUBLIC_FRONTEND_URL}
-    container_name: snipr-frontend
+      dockerfile: Dockerfile.dev
+    container_name: snipr-frontend-dev
     ports:
       - '${FRONTEND_PORT}:${FRONTEND_PORT}'
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     env_file:
       - .env
-    environment:
-      - PORT=${FRONTEND_PORT}
-      - HOSTNAME=0.0.0.0
-      - NODE_ENV=production
-      - API_URL=http://backend:${PORT}
-      - NEXT_PUBLIC_API_URL=http://localhost:${PORT}
     depends_on:
       - backend
-    restart: unless-stopped
 
   postgres:
     image: postgres:16-alpine
@@ -49,7 +41,6 @@ services:
       POSTGRES_DB: ${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    restart: unless-stopped
 
   pgadmin:
     image: dpage/pgadmin4
@@ -61,7 +52,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     depends_on:
       - postgres
-    restart: unless-stopped
 
   redis:
     image: redis:7-alpine
@@ -70,7 +60,6 @@ services:
       - '${REDIS_PORT}:${REDIS_PORT}'
     volumes:
       - redis_data:/data
-    restart: unless-stopped
 
 volumes:
   postgres_data:

@@ -1,4 +1,6 @@
 .env
 node_modules
 dist
+
 deployment-checklist.txt
+docker-commands.txt
