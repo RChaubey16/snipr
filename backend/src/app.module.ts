@@ -26,7 +26,9 @@ import { UrlModule } from './url/url.module';
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
         entities: [Url, User, Click],
-        synchronize: true,
+        migrations: ['dist/migrations/*.js'],
+        migrationsRun: true,
+        synchronize: false,
       }),
     }),
     CacheModule.registerAsync({
