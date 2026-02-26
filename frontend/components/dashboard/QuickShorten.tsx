@@ -38,7 +38,7 @@ export function QuickShorten() {
         return;
       }
 
-      setShortUrl(`${process.env.NEXT_PUBLIC_API_URL}/${res.data.shortUrl}`);
+      setShortUrl(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/${res.data.shortUrl}`);
       setLongUrl("");
     } catch {
       setError("Server connection failed");
