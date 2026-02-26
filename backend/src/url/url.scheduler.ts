@@ -12,14 +12,21 @@ export class UrlScheduler {
     @InjectRepository(Url)
     private readonly urlRepository: Repository<Url>,
   ) {}
-
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async resetDailyClicks() {
-    await this.urlRepository.update({}, { dailyClickCount: 0 });
+    await this.urlRepository
+      .createQueryBuilder()
+      .update()
+      .set({ dailyClickCount: 0 })
+      .execute();
   }
 
   @Cron(CronExpression.EVERY_WEEK)
   async resetWeeklyClicks() {
-    await this.urlRepository.update({}, { weeklyClickCount: 0 });
+    await this.urlRepository
+      .createQueryBuilder()
+      .update()
+      .set({ weeklyClickCount: 0 })
+      .execute();
   }
 }

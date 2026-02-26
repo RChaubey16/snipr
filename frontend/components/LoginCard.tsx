@@ -38,15 +38,14 @@ function GoogleIcon() {
 export function LoginCard() {
   const router = useRouter();
   const handleGoogleSignIn = () => {
-    console.log("Sign in with Google");
     router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`);
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ filter: "blur(10px)", scale: 0.98, opacity: 0 }}
+      animate={{ filter: "blur(0px)", scale: 1, opacity: 1 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       className="w-full max-w-sm"
     >
       {/* Card */}

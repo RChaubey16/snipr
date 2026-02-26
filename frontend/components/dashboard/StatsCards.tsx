@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Link2, MousePointerClick, TrendingUp, Trophy } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,7 +21,10 @@ export async function StatsCards() {
     },
     {
       label: "Top Link",
-      value: userStats?.topLink?.shortUrl,
+      value: userStats?.topLink?.shortUrl
+        ? `/${userStats.topLink.shortUrl.split("/").pop()}`
+        : "—",
+      href: userStats?.topLink?.shortUrl,
       icon: Trophy,
     },
     {
@@ -42,7 +47,17 @@ export async function StatsCards() {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-muted-foreground text-sm">{stat.label}</p>
-                <p className="truncate text-xl font-bold">{stat.value}</p>
+                {stat.href ? (
+                  <Link
+                    href={stat.href}
+                    target="_blank"
+                    className="hover:text-primary truncate text-xl font-bold hover:underline"
+                  >
+                    {stat.value}
+                  </Link>
+                ) : (
+                  <p className="truncate text-xl font-bold">{stat.value}</p>
+                )}
                 {stat.description && (
                   <p className="text-muted-foreground text-xs">
                     {stat.description}

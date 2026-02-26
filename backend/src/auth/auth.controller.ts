@@ -43,6 +43,6 @@ export class AuthController {
   @Post('logout')
   logout(@Res() res: Response) {
     res.clearCookie('auth_token');
-    res.json({ message: 'Logged out' });
+    res.json({ success: true, message: 'Logged out' });
   }
 }
