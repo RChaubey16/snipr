@@ -6,7 +6,7 @@ export default async function AuthCallback({
 }: {
   searchParams: { code?: string };
 }) {
-  const code = searchParams.code;
+  const code = await searchParams.code;
 
   if (code) {
     // Exchange code for token (server-to-server, internal network)
