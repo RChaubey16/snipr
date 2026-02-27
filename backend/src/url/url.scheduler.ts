@@ -12,6 +12,7 @@ export class UrlScheduler {
     @InjectRepository(Url)
     private readonly urlRepository: Repository<Url>,
   ) {}
+
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async resetDailyClicks() {
     await this.urlRepository
