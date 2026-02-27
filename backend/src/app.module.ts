@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { createKeyv } from '@keyv/redis';
 
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/user.entity';
 import { RedirectModule } from './redirect/redirect.module';
@@ -45,8 +47,10 @@ import { UrlModule } from './url/url.module';
     }),
     ScheduleModule.forRoot(),
     UrlModule,
-    RedirectModule,
     AuthModule,
+    RedirectModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -94,19 +94,6 @@ export function LoginCard() {
             <GoogleIcon />
             Continue with Google
           </motion.button>
-
-          {/* Footer note */}
-          <p className="text-muted-foreground text-center text-[0.73rem] leading-relaxed">
-            By signing in, you agree to our{" "}
-            <a href="/terms" className="text-primary underline">
-              Terms of Service
-            </a>{" "}
-            and{" "}
-            <a href="/privacy" className="text-primary underline">
-              Privacy Policy
-            </a>
-            .
-          </p>
         </div>
       </div>
     </motion.div>
