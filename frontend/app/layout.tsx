@@ -42,9 +42,11 @@ export const metadata: Metadata = {
       "Snipr is a fast, minimal URL shortener. Shorten links, share them anywhere, and track clicks in real time.",
     siteName: "Snipr",
     type: "website",
+    images: ["/home-page.png"],
   },
   twitter: {
     card: "summary_large_image",
+    images: ["/home-page.png"],
   },
 };
 
