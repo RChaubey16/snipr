@@ -6,7 +6,6 @@ const authRoutes = ["/login"];
 
 export async function proxy(request: NextRequest) {
   const token = request.cookies.get("auth_token")?.value;
-
   const { pathname } = request.nextUrl;
 
   const isAuthenticated = await verifyToken(token);
@@ -25,20 +24,16 @@ export async function proxy(request: NextRequest) {
 }
 
 async function verifyToken(token: string | undefined): Promise<boolean> {
-  if (!token) {
-    console.log('No token found');
-    return false;
-  }
+  if (!token) return false;
 
   try {
-    const result = await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET!));
-    console.log('Token valid:', result.payload);
+    await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET!));
     return true;
-  } catch (error) {
-    console.log('Token verification failed:', error);
+  } catch {
     return false;
   }
 }
+
 export const config = {
   matcher: ["/dashboard/:path*", "/login"],
 };
