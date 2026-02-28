@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Snipr Frontend
+
+The web interface for [Snipr](../README.md) — a fast and minimal URL shortener.
+
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| Next.js 16 | React framework (SSR, server actions, routing) |
+| React 19 | UI library |
+| Tailwind CSS 4 | Utility-first styling |
+| shadcn/ui + Radix UI | Accessible component library |
+| Motion | Animations |
+| next-themes | Dark mode support |
+| jose | JWT handling |
+
+## Project Structure
+
+```
+app/
+├── page.tsx              # Landing page with URL input form
+├── login/                # Google OAuth login page
+├── auth/callback/        # OAuth callback handler
+├── dashboard/
+│   ├── page.tsx          # Stats overview + quick shorten
+│   └── links/page.tsx    # Full link library with pagination
+├── [shortCode]/          # Client-side redirect fallback
+└── api/                  # API routes (auth proxy)
+components/
+├── UrlInputForm.tsx      # Main URL shortening form
+├── Navbar.tsx            # Context-aware navigation
+├── StatsCards.tsx        # User statistics display
+├── RecentLinksTable.tsx  # Recent links on dashboard
+├── AllLinksTable.tsx     # Paginated link management
+├── QuickShorten.tsx      # Quick shorten widget
+└── LoginCard.tsx         # Google OAuth login card
+hooks/
+└── useAuth.ts            # Client-side auth state
+lib/
+├── actions.ts            # Server actions (API calls)
+└── utils.ts              # Shared utilities
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- [pnpm](https://pnpm.io/installation)
+- The backend API running (see [backend README](../backend/README.md))
+
+### Install & Run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app runs at [http://localhost:3001](http://localhost:3001) by default.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+These are configured in the root `.env` file (see [.env.example](../.env.example)):
 
-## Learn More
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_API_URL` | Backend API URL (client-side) |
+| `API_URL` | Backend API URL (server-side / Docker internal) |
+| `NEXT_PUBLIC_FRONTEND_URL` | Frontend URL |
+| `FRONTEND_PORT` | Port for the frontend dev server |
 
-To learn more about Next.js, take a look at the following resources:
+## Key Patterns
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Server actions** (`"use server"`) in `lib/actions.ts` handle all API communication
+- **Cookie-based auth** — JWT is stored in an HTTP-only cookie, forwarded automatically with requests
+- **`useAuth` hook** — manages client-side authentication state by calling `/auth/me`
+- **Dark mode** — toggle via `next-themes` with system preference detection

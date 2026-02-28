@@ -4,6 +4,13 @@ A fast and minimal URL shortener. Paste a long URL, get a short one — done.
 
 Built with a NestJS backend, Next.js frontend, PostgreSQL for persistence, and Redis for blazing-fast redirect caching.
 
+### 🌐 Live Demo
+
+| Service  | URL                          |
+|----------|------------------------------|
+| Frontend | https://snipr.ruturaj.xyz    |
+| Backend  | https://snipr-api.ruturaj.xyz |
+
 ---
 
 ## 🏗️ Tech Stack
@@ -72,7 +79,7 @@ snipr/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/snipr.git
+git clone https://github.com/RChaubey16/snipr.git
 cd snipr
 ```
 
@@ -212,6 +219,7 @@ pnpm run test:cov
 - [x] Auto-expiring links (30-day TTL)
 - [x] Health check endpoint
 - [x] User stats (total links, total clicks, top link)
+- [x] Production deployment (frontend & backend)
 - [ ] Analytics charts & visualizations
 - [ ] Custom short codes
 
