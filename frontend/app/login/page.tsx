@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Login – Snipr",
     description: "Sign in to Snipr to manage and shorten your links.",
+    images: ["/home-page.png"],
   },
 };
 

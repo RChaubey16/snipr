@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     title: "Snipr – Shorten, Share, Track",
     description:
       "Shorten any URL in seconds. Snipr gives you clean, trackable short links with real-time click analytics.",
+    images: ["/home-page.png"],
   },
 };
 

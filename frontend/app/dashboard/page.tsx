@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Dashboard – Snipr",
     description: "Manage your shortened links",
+    images: ["/home-page.png"],
   },
   robots: { index: false },
 };
