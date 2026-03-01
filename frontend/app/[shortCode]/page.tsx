@@ -31,5 +31,5 @@ export default async function ShortUrlPage({
   }
 
   // redirect to actual URL
-  redirect(data.originalUrl);
+  redirect(`${process.env.NEXT_PUBLIC_API_URL}/${shortCode}`);
 }
