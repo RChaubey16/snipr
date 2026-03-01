@@ -38,7 +38,9 @@ export function QuickShorten() {
         return;
       }
 
-      setShortUrl(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/${res.data.shortUrl}`);
+      setShortUrl(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/${res.data.shortUrl}`,
+      );
       setLongUrl("");
     } catch {
       setError("Server connection failed");
@@ -88,9 +90,12 @@ export function QuickShorten() {
           ) : (
             "Snipe"
           )}
-          <AnimateIcon animateOnView loop loopDelay={3000}>
-            <ScissorsLineDashed />
-          </AnimateIcon>
+
+          {!isLoading && (
+            <AnimateIcon animateOnView loop loopDelay={3000}>
+              <ScissorsLineDashed />
+            </AnimateIcon>
+          )}
         </Button>
       </form>
 

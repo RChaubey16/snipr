@@ -107,9 +107,12 @@ const UrlInputForm = () => {
           ) : (
             "Snipe"
           )}
-          <AnimateIcon animateOnView loop loopDelay={3000}>
-            <ScissorsLineDashed />
-          </AnimateIcon>
+
+          {!isLoading && (
+            <AnimateIcon animateOnView loop loopDelay={3000}>
+              <ScissorsLineDashed />
+            </AnimateIcon>
+          )}
         </Button>
       </form>
 

@@ -152,7 +152,7 @@ export class UrlService {
    * @param shortCode The short code to retrieve the long URL for.
    * @returns The long URL for the given short code.
    */
-  async getLongUrl(shortCode: string): Promise<string> {
+  async getLongUrl(shortCode: string): Promise<string | null> {
     // Check Redis first
     const cached = await this.cacheManager.get<string>(shortCode);
     if (cached) {
@@ -170,7 +170,7 @@ export class UrlService {
       return url.longUrl;
     }
 
-    throw new NotFoundException('Invalid snipr');
+    return null;
   }
 
   /**

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Query,
@@ -15,12 +16,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { OptionalJwtGuard } from 'src/auth/guards/optional-jwt.guard';
 import { User } from 'src/auth/user.entity';
 
-import {
-  PaginatedUrlResponseDto,
-  SniprDto,
-  UrlDto,
-  UserStatsDto,
-} from './dto/url.dto';
+import { PaginatedUrlResponseDto, UrlDto, UserStatsDto } from './dto/url.dto';
 import { UrlService } from './url.service';
 
 @Controller('url')
@@ -61,10 +57,17 @@ export class UrlController {
     return this.urlService.getUserStats(req.user as User);
   }
 
-  @Get()
-  async getLongUrl(@Body() sniprDto: SniprDto): Promise<string> {
-    const { shortUrl } = sniprDto;
-    return this.urlService.getLongUrl(shortUrl);
+  @Get(':shortCode')
+  async getLongUrl(
+    @Param('shortCode') shortCode: string,
+  ): Promise<{ originalUrl: string }> {
+    const url = await this.urlService.getLongUrl(shortCode);
+
+    if (!url) {
+      throw new NotFoundException('Short URL not found');
+    }
+
+    return { originalUrl: url };
   }
 
   @Delete(':id')

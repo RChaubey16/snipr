@@ -29,7 +29,7 @@ type User = {
 };
 
 export function Navbar() {
-  const { user: authUser, isAuthenticated, logout } = useAuth();
+  const { user: authUser, isAuthenticated, loading, logout } = useAuth();
   const router = useRouter();
 
   const user = authUser as unknown as User;
@@ -38,6 +38,8 @@ export function Navbar() {
     await logout();
     router.push("/");
   };
+
+  if (loading) return null;
 
   return (
     <nav className="fixed bottom-6 left-1/2 -translate-x-1/2">
